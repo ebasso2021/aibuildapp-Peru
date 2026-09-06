@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aibuildapp — How our AI agents work</title>
+<meta name="description" content="See how Aibuildapp's custom AI agents work: the observe, think, act loop behind every agent we build, with real examples.">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Manrope:wght@400;500;600;700&display=swap');
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    a { color: #F5F7FB; text-decoration: none; }
+    a:hover { color: #22D3EE; }
+    .page { background: #0A0E1A; font-family: 'Manrope', system-ui, sans-serif; min-height: 100%; }
+    h1, h2, h3 { font-family: 'Space Grotesk', system-ui, sans-serif; margin: 0; }
+    .nav-link { color: #B9C2D6; font-size: 15px; font-weight: 500; }
+    .nav-link:hover { color: #F5F7FB; }
+    .nav-link.active { color: #F5F7FB; }
+    .btn-primary { transition: filter .15s ease, transform .15s ease; }
+    .btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .btn-secondary { transition: background .15s ease, border-color .15s ease; }
+    .btn-secondary:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.32); }
+    .cta-link { transition: color .15s ease, gap .15s ease; }
+    .cta-link:hover { color: #22D3EE; }
+    .card { transition: transform .15s ease, border-color .15s ease; }
+    .card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.16); }
+    .example-video { width: 100%; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); display: block; background: #0A0E1A; }
+    @media (max-width: 860px) {
+      .agents-hero-grid { grid-template-columns: 1fr !important; }
+      .agents-cards { grid-template-columns: 1fr !important; }
+      .example-row { grid-template-columns: 1fr !important; }
+      .example-row.rev { direction: ltr !important; }
+    }
+  </style>
+
+</head>
+<body>
+
+
+<div class="page">
+
+  <!-- NAV -->
+  <div style="display:flex; align-items:center; justify-content:space-between; padding:24px 80px; max-width:1360px; margin:0 auto;">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <a href="index.html?lang=en" style="display:flex; align-items:center; gap:12px;">
+      <svg width="34" height="34" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="navGrad" x1="10" y1="10" x2="110" y2="110" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#22D3EE"/>
+            <stop offset="55%" stop-color="#6366F1"/>
+            <stop offset="100%" stop-color="#A855F7"/>
+          </linearGradient>
+        </defs>
+        <rect x="6" y="6" width="108" height="108" rx="26" fill="#0A0E1A"/>
+        <path d="M 83,20.2 A 46,46 0 1 1 16.8,44.3" fill="none" stroke="url(#navGrad)" stroke-width="5" stroke-linecap="round"/>
+        <polygon points="18.85,38.66 20.13,49.77 10.73,46.35" fill="url(#navGrad)"/>
+        <rect x="32" y="36" width="56" height="48" rx="8" fill="none" stroke="#94A3B8" stroke-width="3"/>
+        <line x1="35" y1="50" x2="85" y2="50" stroke="#94A3B8" stroke-width="1.6" opacity="0.7"/>
+        <line x1="60" y1="68" x2="60" y2="56" stroke="url(#navGrad)" stroke-width="2" opacity="0.9"/>
+        <line x1="60" y1="68" x2="74" y2="68" stroke="url(#navGrad)" stroke-width="2" opacity="0.9"/>
+        <line x1="60" y1="68" x2="60" y2="80" stroke="url(#navGrad)" stroke-width="2" opacity="0.9"/>
+        <line x1="60" y1="68" x2="46" y2="68" stroke="url(#navGrad)" stroke-width="2" opacity="0.9"/>
+        <circle cx="60" cy="56" r="3" fill="url(#navGrad)"/>
+        <circle cx="74" cy="68" r="3" fill="url(#navGrad)"/>
+        <circle cx="60" cy="80" r="3" fill="url(#navGrad)"/>
+        <circle cx="46" cy="68" r="3" fill="url(#navGrad)"/>
+        <circle cx="60" cy="68" r="5" fill="url(#navGrad)"/>
+        <path d="M 53.94,13.5 A 7,7 0 0 1 66.06,13.5" fill="none" stroke="url(#navGrad)" stroke-width="1.8" stroke-linecap="round" opacity="0.9"/>
+        <path d="M 56.54,15 A 4,4 0 0 1 63.46,15" fill="none" stroke="url(#navGrad)" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="60" cy="17" r="1.8" fill="url(#navGrad)"/>
+      </svg>
+      <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:20px;">
+        <span style="background:linear-gradient(135deg,#22D3EE,#6366F1 55%,#A855F7); -webkit-background-clip:text; background-clip:text; color:transparent;">Ai</span><span style="color:#F5F7FB;">buildapp</span>
+      </div>
+      </a>
+    </div>
+    <div style="display:flex; align-items:center; gap:36px;">
+      <a class="nav-link" href="index.html#services">Services</a>
+      <a class="nav-link" href="index.html#how-it-works">How it works</a>
+      <a class="nav-link active" href="agents.html">Agents</a>
+      <a class="nav-link" href="index.html#contact">Contact</a>
+    </div>
+    <div style="display:flex; align-items:center; gap:20px;">
+      <div style="display:flex; align-items:center; gap:4px; border:1px solid rgba(255,255,255,0.14); border-radius:100px; padding:4px; font-size:13px; font-weight:700;">
+        <span style="padding:5px 12px; border-radius:100px; background:rgba(255,255,255,0.1); color:#F5F7FB;">EN</span>
+        <a href="es/agents.html" style="padding:5px 12px; border-radius:100px; color:#7C8798; text-decoration:none;">ES</a>
+      </div>
+      <a class="btn-primary" href="index.html#contact" style="background:linear-gradient(135deg,#22D3EE,#6366F1 55%,#A855F7); color:#0A0E1A; font-weight:700; font-size:14px; padding:11px 22px; border-radius:10px; display:inline-block;">Get started</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="agents-hero-grid" style="max-width:1360px; margin:0 auto; padding:72px 80px 88px; display:grid; grid-template-columns: 1.05fr 0.95fr; gap:64px; align-items:center;">
+    <div>
+      <div style="display:inline-block; padding:7px 16px; border:1px solid rgba(255,255,255,0.14); border-radius:100px; font-size:13px; font-weight:600; color:#B9C2D6; letter-spacing:0.02em;">HOW OUR AGENTS WORK</div>
+      <h1 style="font-size:50px; line-height:1.1; color:#F5F7FB; font-weight:700; max-width:600px; margin-top:24px;">Agents work in a loop: observe, think, act — then loop again.</h1>
+      <p style="font-size:18px; line-height:1.6; color:#AEB8CE; max-width:520px; margin-top:24px;">Strip away the hype and an "agent" is a program stuck in a simple, repeating rhythm. It checks the current state of things, reasons about what to do next, takes one action, and then checks again. Below is that loop broken down, followed by three real examples doing very different jobs.</p>
+      <div style="display:flex; gap:16px; margin-top:36px;">
+        <a class="btn-primary" href="index.html#contact" style="background:linear-gradient(135deg,#22D3EE,#6366F1 55%,#A855F7); color:#0A0E1A; font-weight:700; font-size:15px; padding:16px 28px; border-radius:10px; display:inline-block;">Talk about your workflow</a>
+        <a class="btn-secondary" href="#examples" style="border:1px solid rgba(255,255,255,0.18); color:#F5F7FB; font-weight:600; font-size:15px; padding:16px 28px; border-radius:10px; display:inline-block;">See it in action</a>
+      </div>
+    </div>
+    <div style="background:#10152A; border:1px solid rgba(255,255,255,0.07); border-radius:28px; padding:32px; display:flex; align-items:center; justify-content:center; min-height:380px;">
+      <svg width="100%" height="320" viewBox="0 0 460 340" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="loopGrad" x1="20" y1="20" x2="440" y2="320" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#22D3EE"/>
+            <stop offset="55%" stop-color="#6366F1"/>
+            <stop offset="100%" stop-color="#A855F7"/>
+          </linearGradient>
+        </defs>
+        <path d="M 176,238 C 262,120 360,120 400,60" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>
+        <path d="M 400,60 C 440,120 462,238 400,300" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>
+        <path d="M 400,300 C 340,362 220,362 176,238" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>
+        <circle cx="176" cy="238" r="52" fill="rgba(34,211,238,0.08)" stroke="#22D3EE" stroke-width="2.5"/>
+        <text x="176" y="234" text-anchor="middle" fill="#22D3EE" font-family="Space Grotesk" font-weight="700" font-size="16">OBSERVE</text>
+        <text x="176" y="252" text-anchor="middle" fill="#AEB8CE" font-family="Manrope" font-size="11">read what happened</text>
+        <circle cx="400" cy="60" r="52" fill="rgba(99,102,241,0.10)" stroke="#6366F1" stroke-width="2.5"/>
+        <text x="400" y="56" text-anchor="middle" fill="#8B93F5" font-family="Space Grotesk" font-weight="700" font-size="16">THINK</text>
+        <text x="400" y="74" text-anchor="middle" fill="#AEB8CE" font-family="Manrope" font-size="11">decide next move</text>
+        <circle cx="400" cy="300" r="52" fill="rgba(168,85,247,0.10)" stroke="#A855F7" stroke-width="2.5"/>
+        <text x="400" y="296" text-anchor="middle" fill="#C084FC" font-family="Space Grotesk" font-weight="700" font-size="16">ACT</text>
+        <text x="400" y="314" text-anchor="middle" fill="#AEB8CE" font-family="Manrope" font-size="11">do the one thing</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- THE LOOP: 3 CARDS -->
+  <div style="max-width:1360px; margin:0 auto; padding:16px 80px 64px;">
+    <div class="agents-cards" style="display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:24px;">
+
+      <div class="card" style="background:#10152A; border:1px solid rgba(34,211,238,0.25); border-radius:16px; padding:32px;">
+        <div style="font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:700; letter-spacing:0.06em; color:#22D3EE;">01 · OBSERVE</div>
+        <h3 style="font-size:19px; color:#F5F7FB; font-weight:700; margin-top:14px;">It reads what just happened</h3>
+        <p style="font-size:14.5px; line-height:1.6; color:#AEB8CE; margin-top:10px;">A message, a file, an error, search results. This is the agent's only window onto the world — it knows nothing you haven't shown it.</p>
+      </div>
+
+      <div class="card" style="background:#10152A; border:1px solid rgba(99,102,241,0.28); border-radius:16px; padding:32px;">
+        <div style="font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:700; letter-spacing:0.06em; color:#8B93F5;">02 · THINK</div>
+        <h3 style="font-size:19px; color:#F5F7FB; font-weight:700; margin-top:14px;">It decides what to do next</h3>
+        <p style="font-size:14.5px; line-height:1.6; color:#AEB8CE; margin-top:10px;">It reasons about what that observation means and picks a next move: which tool to call, what to search, what to write.</p>
+      </div>
+
+      <div class="card" style="background:#10152A; border:1px solid rgba(168,85,247,0.28); border-radius:16px; padding:32px;">
+        <div style="font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:700; letter-spacing:0.06em; color:#C084FC;">03 · ACT</div>
+        <h3 style="font-size:19px; color:#F5F7FB; font-weight:700; margin-top:14px;">It does that one thing</h3>
+        <p style="font-size:14.5px; line-height:1.6; color:#AEB8CE; margin-top:10px;">Then it hands the result back to itself as a new observation. The loop closes and starts again, until the task is done.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- EXAMPLES -->
+  <div id="examples" style="max-width:1360px; margin:0 auto; padding:32px 80px;">
+    <div style="max-width:640px; margin:0 auto; text-align:center;">
+      <div style="font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#8B93F5;">Same loop, different jobs</div>
+      <h2 style="font-size:34px; color:#F5F7FB; font-weight:700; margin-top:14px;">Three agents, one rhythm</h2>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:56px; margin-top:56px;">
+
+      <div class="example-row" style="display:grid; grid-template-columns:0.9fr 1.1fr; gap:48px; align-items:center;">
+        <video class="example-video" src="assets/agents/research.mp4" poster="assets/agents/research-poster.jpg" autoplay loop muted playsinline></video>
+        <div>
+          <div style="font-size:13px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#8B93F5;">Research assistant</div>
+          <h3 style="font-size:22px; color:#F5F7FB; font-weight:700; margin-top:10px;">"What changed in the new tax bracket?"</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; margin-top:18px;">
+            <div style="font-size:14.5px; color:#D8DEEC;"><b style="color:#22D3EE;">Observe —</b> reads the question, notices it needs current, sourced facts.</div>
+            <div style="font-size:14.5px; color:#D8DEEC;"><b style="color:#8B93F5;">Think —</b> decides what to search and which sources to compare.</div>
+            <div style="font-size:14.5px; color:#D8DEEC;"><b style="color:#C084FC;">Act —</b> writes a short, sourced answer.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="example-row rev" style="display:grid; grid-template-columns:1.1fr 0.9fr; gap:48px; align-items:center;">
+        <div>
+          <div style="font-size:13px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#8B93F5;">Debugging agent</div>
+          <h3 style="font-size:22px; color:#F5F7FB; font-weight:700; margin-top:10px;">"Why is checkout failing?"</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; margin-top:18px;">
+            <div style="font-size:14.5px; color:#D8DEEC;"><b style="color:#22D3EE;">Observe —</b> reads the error log, reproduces the failure.</div>
+            <div style="font-size:14.5px; color:#D8DEEC;"><b style="color:#8B93F5;">Think —</b> forms a hypothesis, picks the file most likely at fault.</div>
+            <div style="font-size:14.5px; color:#D8DEEC;"><b style="color:#C084FC;">Act —</b> edits the code, reruns the tests.</div>
+          </div>
+        </div>
+        <video class="example-video" src="assets/agents/debug.mp4" poster="assets/agents/debug-poster.jpg" autoplay loop muted playsinline></video>
+      </div>
+
+      <div class="example-row" style="display:grid; grid-template-columns:0.9fr 1.1fr; gap:48px; align-items:center;">
+        <video class="example-video" src="assets/agents/trip.mp4" poster="assets/agents/trip-poster.jpg" autoplay loop muted playsinline></video>
+        <div>
+          <div style="font-size:13px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#8B93F5;">Trip planner</div>
+          <h3 style="font-size:22px; color:#F5F7FB; font-weight:700; margin-top:10px;">"Plan a weekend in Lisbon"</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; margin-top:18px;">
+            <div style="font-size:14.5px; color:#D8DEEC;"><b style="color:#22D3EE;">Observe —</b> checks the calendar and stated budget.</div>
+            <div style="font-size:14.5px; color:#D8DEEC;"><b style="color:#8B93F5;">Think —</b> compares flights and places to stay against that budget.</div>
+            <div style="font-size:14.5px; color:#D8DEEC;"><b style="color:#C084FC;">Act —</b> drafts an itinerary to review.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <p style="text-align:center; font-size:15px; color:#7C8798; margin-top:56px; max-width:560px; margin-left:auto; margin-right:auto;">Different tools, different tasks — every agent above is running the same loop underneath.</p>
+  </div>
+
+  <!-- CTA BANNER -->
+  <div style="max-width:1360px; margin:0 auto; padding:24px 80px 96px;">
+    <div style="background:linear-gradient(120deg, #131A33, #1B1030); border:1px solid rgba(255,255,255,0.08); border-radius:24px; padding:64px; text-align:center;">
+      <h2 style="font-size:34px; color:#F5F7FB; font-weight:700; max-width:560px; margin:0 auto;">Ready to put an agent to work in your product?</h2>
+      <p style="font-size:16px; color:#AEB8CE; max-width:480px; margin:16px auto 0;">Tell us about the workflow you'd hand off — we'll design an agent around it, not the other way around.</p>
+      <a class="btn-primary" href="index.html#contact" style="background:linear-gradient(135deg,#22D3EE,#6366F1 55%,#A855F7); color:#0A0E1A; font-weight:700; font-size:15px; padding:16px 32px; border-radius:10px; display:inline-block; margin-top:32px;">Book a free consultation</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="max-width:1360px; margin:0 auto; padding:48px 80px 32px; border-top:1px solid rgba(255,255,255,0.08);">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:32px;">
+      <div style="max-width:280px;">
+        <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:18px;">
+          <span style="background:linear-gradient(135deg,#22D3EE,#6366F1 55%,#A855F7); -webkit-background-clip:text; background-clip:text; color:transparent;">Ai</span><span style="color:#F5F7FB;">buildapp</span>
+        </div>
+        <p style="font-size:14px; color:#7C8798; margin-top:10px; line-height:1.6;">AI rebuilds for web and apps.</p>
+      </div>
+      <div style="display:flex; gap:48px; flex-wrap:wrap;">
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <span style="font-size:13px; font-weight:700; color:#7C8798; text-transform:uppercase; letter-spacing:0.06em;">Company</span>
+          <a class="nav-link" href="index.html#services">Services</a>
+          <a class="nav-link" href="index.html#how-it-works">How it works</a>
+          <a class="nav-link" href="agents.html">Agents</a>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <span style="font-size:13px; font-weight:700; color:#7C8798; text-transform:uppercase; letter-spacing:0.06em;">Contact</span>
+          <a class="nav-link" href="mailto:info@aibuildapp.net" style="color:#B9C2D6;">info@aibuildapp.net</a>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:40px; padding-top:24px; border-top:1px solid rgba(255,255,255,0.06); text-align:center;">
+      <span style="font-size:13px; color:#5C6478;">© 2026 Aibuildapp. All rights reserved.</span>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

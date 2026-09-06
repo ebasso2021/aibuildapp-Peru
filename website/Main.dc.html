@@ -1,0 +1,525 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Manrope:wght@400;500;600;700&display=swap');
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    a { color: #F5F7FB; text-decoration: none; }
+    a:hover { color: #22D3EE; }
+    .page { background: #0A0E1A; font-family: 'Manrope', system-ui, sans-serif; min-height: 100%; }
+    h1, h2, h3 { font-family: 'Space Grotesk', system-ui, sans-serif; margin: 0; }
+    .nav-link { color: #B9C2D6; font-size: 15px; font-weight: 500; }
+    .nav-link:hover { color: #F5F7FB; }
+    .btn-primary { transition: filter .15s ease, transform .15s ease; }
+    .btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .btn-secondary { transition: background .15s ease, border-color .15s ease; }
+    .btn-secondary:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.32); }
+    .cta-link { transition: color .15s ease, gap .15s ease; }
+    .cta-link:hover { color: #22D3EE; }
+    .card { transition: transform .15s ease, border-color .15s ease; }
+    .card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.16); }
+    @keyframes pulseDot { 0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.55); } 70% { box-shadow: 0 0 0 9px rgba(34,197,94,0); } 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); } }
+    .chat-greet-close { background:none; border:none; color:#7C8798; font-size:14px; line-height:1; cursor:pointer; padding:0; }
+    .chat-greet-close:hover { color:#F5F7FB; }
+    @keyframes botFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+    @keyframes botTilt { 0%, 100% { transform: rotate(-9deg); } 50% { transform: rotate(9deg); } }
+    .bot-avatar-btn { animation: botFloat 3s ease-in-out infinite; }
+    .bot-avatar-icon { display: block; transform-origin: 50% 68%; animation: botTilt 3.4s ease-in-out infinite; }
+  </style>
+</helmet>
+
+<div class="page">
+
+  <!-- NAV -->
+  <div style="display:flex; align-items:center; justify-content:space-between; padding:24px 80px; max-width:1360px; margin:0 auto;">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <svg width="34" height="34" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="navGrad" x1="10" y1="10" x2="110" y2="110" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#22D3EE"/>
+            <stop offset="55%" stop-color="#6366F1"/>
+            <stop offset="100%" stop-color="#A855F7"/>
+          </linearGradient>
+        </defs>
+        <rect x="6" y="6" width="108" height="108" rx="26" fill="#0A0E1A"/>
+        <path d="M 83,20.2 A 46,46 0 1 1 16.8,44.3" fill="none" stroke="url(#navGrad)" stroke-width="5" stroke-linecap="round"/>
+        <polygon points="18.85,38.66 20.13,49.77 10.73,46.35" fill="url(#navGrad)"/>
+        <rect x="32" y="36" width="56" height="48" rx="8" fill="none" stroke="#94A3B8" stroke-width="3"/>
+        <line x1="35" y1="50" x2="85" y2="50" stroke="#94A3B8" stroke-width="1.6" opacity="0.7"/>
+        <line x1="60" y1="68" x2="60" y2="56" stroke="url(#navGrad)" stroke-width="2" opacity="0.9"/>
+        <line x1="60" y1="68" x2="74" y2="68" stroke="url(#navGrad)" stroke-width="2" opacity="0.9"/>
+        <line x1="60" y1="68" x2="60" y2="80" stroke="url(#navGrad)" stroke-width="2" opacity="0.9"/>
+        <line x1="60" y1="68" x2="46" y2="68" stroke="url(#navGrad)" stroke-width="2" opacity="0.9"/>
+        <circle cx="60" cy="56" r="3" fill="url(#navGrad)"/>
+        <circle cx="74" cy="68" r="3" fill="url(#navGrad)"/>
+        <circle cx="60" cy="80" r="3" fill="url(#navGrad)"/>
+        <circle cx="46" cy="68" r="3" fill="url(#navGrad)"/>
+        <circle cx="60" cy="68" r="5" fill="url(#navGrad)"/>
+        <path d="M 53.94,13.5 A 7,7 0 0 1 66.06,13.5" fill="none" stroke="url(#navGrad)" stroke-width="1.8" stroke-linecap="round" opacity="0.9"/>
+        <path d="M 56.54,15 A 4,4 0 0 1 63.46,15" fill="none" stroke="url(#navGrad)" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="60" cy="17" r="1.8" fill="url(#navGrad)"/>
+      </svg>
+      <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:20px;">
+        <span style="background:linear-gradient(135deg,#22D3EE,#6366F1 55%,#A855F7); -webkit-background-clip:text; background-clip:text; color:transparent;">Ai</span><span style="color:#F5F7FB;">buildapp</span>
+      </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:36px;">
+      <a class="nav-link" href="#services">Services</a>
+      <a class="nav-link" href="#how-it-works">How it works</a>
+      <a class="nav-link" href="#iot">IoT</a>
+      <a class="nav-link" href="#contact">Contact</a>
+    </div>
+    <div style="display:flex; align-items:center; gap:20px;">
+      <div style="display:flex; align-items:center; gap:4px; border:1px solid rgba(255,255,255,0.14); border-radius:100px; padding:4px; font-size:13px; font-weight:700;">
+        <span style="padding:5px 12px; border-radius:100px; background:rgba(255,255,255,0.1); color:#F5F7FB;">EN</span>
+        <a href="es/index.html" style="padding:5px 12px; border-radius:100px; color:#7C8798; text-decoration:none;">ES</a>
+      </div>
+      <a class="btn-primary" href="#contact" style="background:linear-gradient(135deg,#22D3EE,#6366F1 55%,#A855F7); color:#0A0E1A; font-weight:700; font-size:14px; padding:11px 22px; border-radius:10px; display:inline-block;">Get started</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div style="max-width:1360px; margin:0 auto; padding:72px 80px 96px; display:grid; grid-template-columns: 1.05fr 0.95fr; gap:64px; align-items:center;">
+    <div>
+      <div style="display:inline-block; padding:7px 16px; border:1px solid rgba(255,255,255,0.14); border-radius:100px; font-size:13px; font-weight:600; color:#B9C2D6; letter-spacing:0.02em;">AI Product Studio</div>
+      <h1 style="font-size:56px; line-height:1.08; color:#F5F7FB; font-weight:700; max-width:600px; margin-top:24px;">We rebuild your website or app — and put AI to work inside it.</h1>
+      <p style="font-size:18px; line-height:1.6; color:#AEB8CE; max-width:520px; margin-top:24px;">Aibuildapp modernizes products you already have with AI features, automates the workflows behind them, builds custom AI agents, and connects your IoT devices to the rest of your system.</p>
+      <div style="display:flex; gap:16px; margin-top:36px;">
+        <a class="btn-primary" href="#contact" style="background:linear-gradient(135deg,#22D3EE,#6366F1 55%,#A855F7); color:#0A0E1A; font-weight:700; font-size:15px; padding:16px 28px; border-radius:10px; display:inline-block;">Start your AI upgrade</a>
+        <a class="btn-secondary" href="#how-it-works" style="border:1px solid rgba(255,255,255,0.18); color:#F5F7FB; font-weight:600; font-size:15px; padding:16px 28px; border-radius:10px; display:inline-block;">See how it works</a>
+      </div>
+    </div>
+    <div style="background:#10152A; border:1px solid rgba(255,255,255,0.07); border-radius:28px; padding:40px; display:flex; align-items:center; justify-content:center; min-height:420px;">
+      <svg width="260" height="260" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="heroGrad" x1="10" y1="10" x2="110" y2="110" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#22D3EE"/>
+            <stop offset="55%" stop-color="#6366F1"/>
+            <stop offset="100%" stop-color="#A855F7"/>
+          </linearGradient>
+        </defs>
+        <rect x="6" y="6" width="108" height="108" rx="26" fill="#0A0E1A"/>
+        <path d="M 83,20.2 A 46,46 0 1 1 16.8,44.3" fill="none" stroke="url(#heroGrad)" stroke-width="5" stroke-linecap="round"/>
+        <polygon points="18.85,38.66 20.13,49.77 10.73,46.35" fill="url(#heroGrad)"/>
+        <rect x="32" y="36" width="56" height="48" rx="8" fill="none" stroke="#94A3B8" stroke-width="3"/>
+        <line x1="35" y1="50" x2="85" y2="50" stroke="#94A3B8" stroke-width="1.6" opacity="0.7"/>
+        <line x1="60" y1="68" x2="60" y2="56" stroke="url(#heroGrad)" stroke-width="2" opacity="0.9"/>
+        <line x1="60" y1="68" x2="74" y2="68" stroke="url(#heroGrad)" stroke-width="2" opacity="0.9"/>
+        <line x1="60" y1="68" x2="60" y2="80" stroke="url(#heroGrad)" stroke-width="2" opacity="0.9"/>
+        <line x1="60" y1="68" x2="46" y2="68" stroke="url(#heroGrad)" stroke-width="2" opacity="0.9"/>
+        <circle cx="60" cy="56" r="3" fill="url(#heroGrad)"/>
+        <circle cx="74" cy="68" r="3" fill="url(#heroGrad)"/>
+        <circle cx="60" cy="80" r="3" fill="url(#heroGrad)"/>
+        <circle cx="46" cy="68" r="3" fill="url(#heroGrad)"/>
+        <circle cx="60" cy="68" r="5" fill="url(#heroGrad)"/>
+        <path d="M 53.94,13.5 A 7,7 0 0 1 66.06,13.5" fill="none" stroke="url(#heroGrad)" stroke-width="1.8" stroke-linecap="round" opacity="0.9"/>
+        <path d="M 56.54,15 A 4,4 0 0 1 63.46,15" fill="none" stroke="url(#heroGrad)" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="60" cy="17" r="1.8" fill="url(#heroGrad)"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <div id="services" style="max-width:1360px; margin:0 auto; padding:64px 80px;">
+    <div style="max-width:640px; margin:0 auto; text-align:center;">
+      <div style="font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#8B93F5;">What we do</div>
+      <h2 style="font-size:38px; color:#F5F7FB; font-weight:700; margin-top:14px;">Everything it takes to make your product AI-native</h2>
+    </div>
+
+    <div style="display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:24px; margin-top:56px;">
+
+      <div class="card" style="background:#10152A; border:1px solid rgba(255,255,255,0.07); border-radius:16px; padding:32px;">
+        <svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="c1" x1="6" y1="8" x2="42" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#22D3EE"/><stop offset="55%" stop-color="#6366F1"/><stop offset="100%" stop-color="#A855F7"/></linearGradient></defs>
+          <rect x="8" y="12" width="32" height="26" rx="5" fill="none" stroke="url(#c1)" stroke-width="2"/>
+          <line x1="11" y1="21" x2="37" y2="21" stroke="url(#c1)" stroke-width="1.3" opacity="0.7"/>
+          <line x1="24" y1="29" x2="24" y2="23" stroke="url(#c1)" stroke-width="1.1" opacity="0.85"/>
+          <line x1="24" y1="29" x2="31" y2="29" stroke="url(#c1)" stroke-width="1.1" opacity="0.85"/>
+          <line x1="24" y1="29" x2="24" y2="35" stroke="url(#c1)" stroke-width="1.1" opacity="0.85"/>
+          <line x1="24" y1="29" x2="17" y2="29" stroke="url(#c1)" stroke-width="1.1" opacity="0.85"/>
+          <circle cx="24" cy="23" r="1.7" fill="url(#c1)"/><circle cx="31" cy="29" r="1.7" fill="url(#c1)"/>
+          <circle cx="24" cy="35" r="1.7" fill="url(#c1)"/><circle cx="17" cy="29" r="1.7" fill="url(#c1)"/>
+          <circle cx="24" cy="29" r="2.6" fill="url(#c1)"/>
+        </svg>
+        <h3 style="font-size:19px; color:#F5F7FB; font-weight:700; margin-top:20px;">AI-powered redesigns</h3>
+        <p style="font-size:14.5px; line-height:1.6; color:#AEB8CE; margin-top:10px;">We take your existing website or app and rebuild it with AI baked in — smarter search, personalization, chat, recommendations — without starting from zero.</p>
+      </div>
+
+      <div class="card" style="background:#10152A; border:1px solid rgba(255,255,255,0.07); border-radius:16px; padding:32px;">
+        <svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="c2" x1="6" y1="8" x2="42" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#22D3EE"/><stop offset="55%" stop-color="#6366F1"/><stop offset="100%" stop-color="#A855F7"/></linearGradient></defs>
+          <path d="M 31.5,11.01 A 15,15 0 1 1 9.90,18.87" fill="none" stroke="url(#c2)" stroke-width="3.5" stroke-linecap="round"/>
+          <polygon points="11.13,15.49 12.09,22.22 6.07,20.04" fill="url(#c2)"/>
+        </svg>
+        <h3 style="font-size:19px; color:#F5F7FB; font-weight:700; margin-top:20px;">Process automation</h3>
+        <p style="font-size:14.5px; line-height:1.6; color:#AEB8CE; margin-top:10px;">We map the manual steps in your business and automate them — from back-office workflows to customer-facing operations.</p>
+      </div>
+
+      <div class="card" style="background:#10152A; border:1px solid rgba(255,255,255,0.07); border-radius:16px; padding:32px;">
+        <svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="c3" x1="6" y1="8" x2="42" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#22D3EE"/><stop offset="55%" stop-color="#6366F1"/><stop offset="100%" stop-color="#A855F7"/></linearGradient></defs>
+          <rect x="14" y="16" width="20" height="18" rx="6" fill="none" stroke="url(#c3)" stroke-width="2.2"/>
+          <line x1="24" y1="16" x2="24" y2="10" stroke="url(#c3)" stroke-width="2"/>
+          <circle cx="24" cy="8" r="2" fill="url(#c3)"/>
+          <circle cx="19" cy="25" r="1.8" fill="url(#c3)"/><circle cx="29" cy="25" r="1.8" fill="url(#c3)"/>
+          <line x1="18" y1="34" x2="30" y2="34" stroke="url(#c3)" stroke-width="1.6" opacity="0.6"/>
+        </svg>
+        <h3 style="font-size:19px; color:#F5F7FB; font-weight:700; margin-top:20px;">Custom AI agents</h3>
+        <p style="font-size:14.5px; line-height:1.6; color:#AEB8CE; margin-top:10px;">We design and deploy agents that handle real tasks — support, data entry, monitoring, follow-ups — built around how your team actually works.</p>
+      </div>
+
+      <div class="card" style="background:#10152A; border:1px solid rgba(255,255,255,0.07); border-radius:16px; padding:32px;">
+        <svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="c4" x1="6" y1="8" x2="42" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#22D3EE"/><stop offset="55%" stop-color="#6366F1"/><stop offset="100%" stop-color="#A855F7"/></linearGradient></defs>
+          <circle cx="24" cy="30" r="2.2" fill="url(#c4)"/>
+          <path d="M 18.8,27 A 6,6 0 0 1 29.2,27" fill="none" stroke="url(#c4)" stroke-width="1.8"/>
+          <path d="M 15.34,25 A 10,10 0 0 1 32.66,25" fill="none" stroke="url(#c4)" stroke-width="1.8" opacity="0.85"/>
+          <rect x="10" y="34" width="8" height="8" rx="2" fill="none" stroke="url(#c4)" stroke-width="1.6"/>
+          <rect x="30" y="34" width="8" height="8" rx="2" fill="none" stroke="url(#c4)" stroke-width="1.6"/>
+          <line x1="24" y1="30" x2="14" y2="36" stroke="url(#c4)" stroke-width="1" stroke-dasharray="2,2" opacity="0.7"/>
+          <line x1="24" y1="30" x2="34" y2="36" stroke="url(#c4)" stroke-width="1" stroke-dasharray="2,2" opacity="0.7"/>
+        </svg>
+        <h3 style="font-size:19px; color:#F5F7FB; font-weight:700; margin-top:20px;">IoT integration</h3>
+        <p style="font-size:14.5px; line-height:1.6; color:#AEB8CE; margin-top:10px;">We connect your IoT devices and sensors to your software, then help you deploy, monitor, and scale the whole system.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div id="how-it-works" style="max-width:1360px; margin:0 auto; padding:64px 80px;">
+    <div style="max-width:640px; margin:0 auto; text-align:center;">
+      <div style="font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#8B93F5;">Process</div>
+      <h2 style="font-size:38px; color:#F5F7FB; font-weight:700; margin-top:14px;">How an AI rebuild happens</h2>
+    </div>
+
+    <div style="display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:24px; margin-top:56px;">
+      <div>
+        <div style="font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:700; background:linear-gradient(135deg,#22D3EE,#6366F1 55%,#A855F7); -webkit-background-clip:text; background-clip:text; color:transparent;">01</div>
+        <h3 style="font-size:18px; color:#F5F7FB; font-weight:700; margin-top:12px;">Audit</h3>
+        <p style="font-size:14.5px; line-height:1.6; color:#AEB8CE; margin-top:8px;">We review your current site, app, or workflow and find where AI creates the most value.</p>
+      </div>
+      <div>
+        <div style="font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:700; background:linear-gradient(135deg,#22D3EE,#6366F1 55%,#A855F7); -webkit-background-clip:text; background-clip:text; color:transparent;">02</div>
+        <h3 style="font-size:18px; color:#F5F7FB; font-weight:700; margin-top:12px;">Design</h3>
+        <p style="font-size:14.5px; line-height:1.6; color:#AEB8CE; margin-top:8px;">We plan the rebuild — features, agents, automations, and any IoT connections — around your goals.</p>
+      </div>
+      <div>
+        <div style="font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:700; background:linear-gradient(135deg,#22D3EE,#6366F1 55%,#A855F7); -webkit-background-clip:text; background-clip:text; color:transparent;">03</div>
+        <h3 style="font-size:18px; color:#F5F7FB; font-weight:700; margin-top:12px;">Build</h3>
+        <p style="font-size:14.5px; line-height:1.6; color:#AEB8CE; margin-top:8px;">We implement the changes, integrate AI models and agents, and connect your devices.</p>
+      </div>
+      <div>
+        <div style="font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:700; background:linear-gradient(135deg,#22D3EE,#6366F1 55%,#A855F7); -webkit-background-clip:text; background-clip:text; color:transparent;">04</div>
+        <h3 style="font-size:18px; color:#F5F7FB; font-weight:700; margin-top:12px;">Deploy &amp; support</h3>
+        <p style="font-size:14.5px; line-height:1.6; color:#AEB8CE; margin-top:8px;">We launch the upgrade and stay on to monitor, tune, and support it.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- IOT SPOTLIGHT -->
+  <div id="iot" style="max-width:1360px; margin:0 auto; padding:64px 80px; display:grid; grid-template-columns:0.95fr 1.05fr; gap:64px; align-items:center;">
+    <div>
+      <div style="font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#8B93F5;">IoT</div>
+      <h2 style="font-size:34px; color:#F5F7FB; font-weight:700; margin-top:14px; max-width:460px;">IoT, handled end to end</h2>
+      <p style="font-size:16px; line-height:1.65; color:#AEB8CE; margin-top:18px; max-width:460px;">Already running sensors, devices, or connected hardware? We help you get IoT projects live — architecture, integration with your app, data pipelines, and ongoing deployment support — so your devices and your software work as one system.</p>
+      <div style="display:flex; flex-direction:column; gap:12px; margin-top:24px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:6px; height:6px; border-radius:50%; background:linear-gradient(135deg,#22D3EE,#A855F7);"></div>
+          <span style="font-size:15px; color:#D8DEEC;">Architecture &amp; device integration</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:6px; height:6px; border-radius:50%; background:linear-gradient(135deg,#22D3EE,#A855F7);"></div>
+          <span style="font-size:15px; color:#D8DEEC;">Data pipelines into your app</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:6px; height:6px; border-radius:50%; background:linear-gradient(135deg,#22D3EE,#A855F7);"></div>
+          <span style="font-size:15px; color:#D8DEEC;">Deployment &amp; ongoing monitoring</span>
+        </div>
+      </div>
+      <a class="cta-link" href="#contact" style="display:inline-flex; align-items:center; gap:8px; margin-top:28px; font-weight:700; font-size:15px; color:#F5F7FB;">Talk about your IoT project →</a>
+    </div>
+    <div style="background:#10152A; border:1px solid rgba(255,255,255,0.07); border-radius:28px; padding:40px; display:flex; align-items:center; justify-content:center; min-height:380px;">
+      <svg width="240" height="240" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="iotGrad" x1="20" y1="20" x2="180" y2="180" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#22D3EE"/><stop offset="55%" stop-color="#6366F1"/><stop offset="100%" stop-color="#A855F7"/></linearGradient></defs>
+        <circle cx="100" cy="100" r="45" fill="none" stroke="url(#iotGrad)" stroke-width="1" opacity="0.12"/>
+        <circle cx="100" cy="100" r="30" fill="none" stroke="url(#iotGrad)" stroke-width="1" opacity="0.18"/>
+        <line x1="100" y1="100" x2="149.5" y2="149.5" stroke="url(#iotGrad)" stroke-width="1.4" stroke-dasharray="3,3" opacity="0.6"/>
+        <line x1="100" y1="100" x2="50.5" y2="149.5" stroke="url(#iotGrad)" stroke-width="1.4" stroke-dasharray="3,3" opacity="0.6"/>
+        <line x1="100" y1="100" x2="50.5" y2="50.5" stroke="url(#iotGrad)" stroke-width="1.4" stroke-dasharray="3,3" opacity="0.6"/>
+        <line x1="100" y1="100" x2="149.5" y2="50.5" stroke="url(#iotGrad)" stroke-width="1.4" stroke-dasharray="3,3" opacity="0.6"/>
+        <rect x="137.5" y="137.5" width="24" height="24" rx="6" fill="#0A0E1A" stroke="url(#iotGrad)" stroke-width="2"/>
+        <rect x="38.5" y="137.5" width="24" height="24" rx="6" fill="#0A0E1A" stroke="url(#iotGrad)" stroke-width="2"/>
+        <rect x="38.5" y="38.5" width="24" height="24" rx="6" fill="#0A0E1A" stroke="url(#iotGrad)" stroke-width="2"/>
+        <rect x="137.5" y="38.5" width="24" height="24" rx="6" fill="#0A0E1A" stroke="url(#iotGrad)" stroke-width="2"/>
+        <circle cx="149.5" cy="149.5" r="2.2" fill="url(#iotGrad)"/>
+        <circle cx="50.5" cy="149.5" r="2.2" fill="url(#iotGrad)"/>
+        <circle cx="50.5" cy="50.5" r="2.2" fill="url(#iotGrad)"/>
+        <circle cx="149.5" cy="50.5" r="2.2" fill="url(#iotGrad)"/>
+        <circle cx="100" cy="100" r="10" fill="url(#iotGrad)"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- AGENTS SPOTLIGHT -->
+  <div style="max-width:1360px; margin:0 auto; padding:64px 80px; display:grid; grid-template-columns:1.05fr 0.95fr; gap:64px; align-items:center;">
+    <div style="background:#10152A; border:1px solid rgba(255,255,255,0.07); border-radius:28px; padding:40px; display:flex; align-items:center; justify-content:center; min-height:380px;">
+      <svg width="240" height="240" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="agGrad" x1="20" y1="20" x2="180" y2="180" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#22D3EE"/><stop offset="55%" stop-color="#6366F1"/><stop offset="100%" stop-color="#A855F7"/></linearGradient></defs>
+        <line x1="45" y1="50" x2="100" y2="105" stroke="url(#agGrad)" stroke-width="1.2" opacity="0.5"/>
+        <line x1="155" y1="50" x2="100" y2="105" stroke="url(#agGrad)" stroke-width="1.2" opacity="0.5"/>
+        <line x1="100" y1="175" x2="100" y2="105" stroke="url(#agGrad)" stroke-width="1.2" opacity="0.5"/>
+
+        <g transform="translate(31.8,36.25) scale(0.55)">
+          <rect x="14" y="16" width="20" height="18" rx="6" fill="none" stroke="url(#agGrad)" stroke-width="2.2"/>
+          <line x1="24" y1="16" x2="24" y2="10" stroke="url(#agGrad)" stroke-width="2"/>
+          <circle cx="24" cy="8" r="2" fill="url(#agGrad)"/>
+          <circle cx="19" cy="25" r="1.8" fill="url(#agGrad)"/><circle cx="29" cy="25" r="1.8" fill="url(#agGrad)"/>
+        </g>
+        <g transform="translate(141.8,36.25) scale(0.55)">
+          <rect x="14" y="16" width="20" height="18" rx="6" fill="none" stroke="url(#agGrad)" stroke-width="2.2"/>
+          <line x1="24" y1="16" x2="24" y2="10" stroke="url(#agGrad)" stroke-width="2"/>
+          <circle cx="24" cy="8" r="2" fill="url(#agGrad)"/>
+          <circle cx="19" cy="25" r="1.8" fill="url(#agGrad)"/><circle cx="29" cy="25" r="1.8" fill="url(#agGrad)"/>
+        </g>
+        <g transform="translate(86.8,161.25) scale(0.55)">
+          <rect x="14" y="16" width="20" height="18" rx="6" fill="none" stroke="url(#agGrad)" stroke-width="2.2"/>
+          <line x1="24" y1="16" x2="24" y2="10" stroke="url(#agGrad)" stroke-width="2"/>
+          <circle cx="24" cy="8" r="2" fill="url(#agGrad)"/>
+          <circle cx="19" cy="25" r="1.8" fill="url(#agGrad)"/><circle cx="29" cy="25" r="1.8" fill="url(#agGrad)"/>
+        </g>
+        <g transform="translate(56.8,60) scale(1.8)">
+          <rect x="14" y="16" width="20" height="18" rx="6" fill="none" stroke="url(#agGrad)" stroke-width="2.2"/>
+          <line x1="24" y1="16" x2="24" y2="10" stroke="url(#agGrad)" stroke-width="2"/>
+          <circle cx="24" cy="8" r="2" fill="url(#agGrad)"/>
+          <circle cx="19" cy="25" r="1.8" fill="url(#agGrad)"/><circle cx="29" cy="25" r="1.8" fill="url(#agGrad)"/>
+          <line x1="18" y1="34" x2="30" y2="34" stroke="url(#agGrad)" stroke-width="1.6" opacity="0.6"/>
+        </g>
+      </svg>
+    </div>
+    <div>
+      <div style="font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#8B93F5;">AI Agents</div>
+      <h2 style="font-size:34px; color:#F5F7FB; font-weight:700; margin-top:14px; max-width:460px;">Agents that do the work, not just answer questions</h2>
+      <p style="font-size:16px; line-height:1.65; color:#AEB8CE; margin-top:18px; max-width:460px;">We build intelligent agents that plug into your existing tools and actually complete tasks — not just chatbots. From customer support to internal operations, we design agents around a real workflow and deploy them into production.</p>
+      <div style="display:flex; flex-direction:column; gap:12px; margin-top:24px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:6px; height:6px; border-radius:50%; background:linear-gradient(135deg,#22D3EE,#A855F7);"></div>
+          <span style="font-size:15px; color:#D8DEEC;">Built around your real workflows</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:6px; height:6px; border-radius:50%; background:linear-gradient(135deg,#22D3EE,#A855F7);"></div>
+          <span style="font-size:15px; color:#D8DEEC;">Connected to your existing tools</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:6px; height:6px; border-radius:50%; background:linear-gradient(135deg,#22D3EE,#A855F7);"></div>
+          <span style="font-size:15px; color:#D8DEEC;">Deployed, monitored, and improved over time</span>
+        </div>
+      </div>
+      <a class="cta-link" href="#contact" style="display:inline-flex; align-items:center; gap:8px; margin-top:28px; font-weight:700; font-size:15px; color:#F5F7FB;">Talk about your workflow →</a>
+    </div>
+  </div>
+
+  <!-- CTA BANNER -->
+  <div style="max-width:1360px; margin:0 auto; padding:24px 80px 96px;">
+    <div id="contact" style="background:linear-gradient(120deg, #131A33, #1B1030); border:1px solid rgba(255,255,255,0.08); border-radius:24px; padding:64px; text-align:center;">
+      <h2 style="font-size:34px; color:#F5F7FB; font-weight:700; max-width:560px; margin:0 auto;">Have a website, app, or IoT project that needs AI?</h2>
+      <p style="font-size:16px; color:#AEB8CE; max-width:480px; margin:16px auto 0;">Tell us what you're working with — we'll show you what an AI-powered rebuild looks like.</p>
+
+      <form onSubmit="{{handleSubmit}}" style="max-width:480px; margin:36px auto 0; text-align:left; display:flex; flex-direction:column; gap:16px;">
+        <div style="display:flex; gap:16px;">
+          <div style="flex:1;">
+            <label style="display:block; font-size:13px; font-weight:600; color:#AEB8CE; margin-bottom:6px;">Name</label>
+            <input type="text" name="fullName" required placeholder="Your name" style="width:100%; background:#0A0E1A; border:1px solid rgba(255,255,255,0.14); border-radius:10px; padding:12px 14px; color:#F5F7FB; font-size:14.5px; font-family:'Manrope',sans-serif;"/>
+          </div>
+          <div style="flex:1;">
+            <label style="display:block; font-size:13px; font-weight:600; color:#AEB8CE; margin-bottom:6px;">Email</label>
+            <input type="email" name="email" required placeholder="you@company.com" style="width:100%; background:#0A0E1A; border:1px solid rgba(255,255,255,0.14); border-radius:10px; padding:12px 14px; color:#F5F7FB; font-size:14.5px; font-family:'Manrope',sans-serif;"/>
+          </div>
+        </div>
+        <div style="display:flex; gap:16px;">
+          <div style="flex:1;">
+            <label style="display:block; font-size:13px; font-weight:600; color:#AEB8CE; margin-bottom:6px;">Company</label>
+            <input type="text" name="company" placeholder="Optional" style="width:100%; background:#0A0E1A; border:1px solid rgba(255,255,255,0.14); border-radius:10px; padding:12px 14px; color:#F5F7FB; font-size:14.5px; font-family:'Manrope',sans-serif;"/>
+          </div>
+          <div style="flex:1;">
+            <label style="display:block; font-size:13px; font-weight:600; color:#AEB8CE; margin-bottom:6px;">I need help with</label>
+            <select name="need" style="width:100%; background:#0A0E1A; border:1px solid rgba(255,255,255,0.14); border-radius:10px; padding:12px 14px; color:#F5F7FB; font-size:14.5px; font-family:'Manrope',sans-serif;">
+              <option>AI-powered redesign</option>
+              <option>Process automation</option>
+              <option>Custom AI agents</option>
+              <option>IoT integration</option>
+              <option>Something else</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label style="display:block; font-size:13px; font-weight:600; color:#AEB8CE; margin-bottom:6px;">Tell us about your project</label>
+          <textarea name="details" required rows="4" placeholder="What are you working with, and what would you like to add AI to?" style="width:100%; background:#0A0E1A; border:1px solid rgba(255,255,255,0.14); border-radius:10px; padding:12px 14px; color:#F5F7FB; font-size:14.5px; font-family:'Manrope',sans-serif; resize:vertical;"></textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="background:linear-gradient(135deg,#22D3EE,#6366F1 55%,#A855F7); color:#0A0E1A; font-weight:700; font-size:15px; padding:16px 32px; border-radius:10px; border:none; cursor:pointer; font-family:'Manrope',sans-serif;">Book a free consultation</button>
+        <span style="font-size:12.5px; color:#7C8798;">This opens your email app with the details filled in, addressed to info@aibuildapp.net.</span>
+      </form>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="max-width:1360px; margin:0 auto; padding:48px 80px 32px; border-top:1px solid rgba(255,255,255,0.08);">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:32px;">
+      <div style="max-width:280px;">
+        <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:18px;">
+          <span style="background:linear-gradient(135deg,#22D3EE,#6366F1 55%,#A855F7); -webkit-background-clip:text; background-clip:text; color:transparent;">Ai</span><span style="color:#F5F7FB;">buildapp</span>
+        </div>
+        <p style="font-size:14px; color:#7C8798; margin-top:10px; line-height:1.6;">AI rebuilds for web, apps, and IoT.</p>
+      </div>
+      <div style="display:flex; gap:48px; flex-wrap:wrap;">
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <span style="font-size:13px; font-weight:700; color:#7C8798; text-transform:uppercase; letter-spacing:0.06em;">Company</span>
+          <a class="nav-link" href="#services">Services</a>
+          <a class="nav-link" href="#how-it-works">How it works</a>
+          <a class="nav-link" href="#iot">IoT</a>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <span style="font-size:13px; font-weight:700; color:#7C8798; text-transform:uppercase; letter-spacing:0.06em;">Contact</span>
+          <a class="nav-link" href="mailto:info@aibuildapp.net" style="color:#B9C2D6;">info@aibuildapp.net</a>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:40px; padding-top:24px; border-top:1px solid rgba(255,255,255,0.06); text-align:center;">
+      <span style="font-size:13px; color:#5C6478;">© 2026 Aibuildapp. All rights reserved.</span>
+    </div>
+  </div>
+
+  <!-- CHAT AGENT -->
+  <div style="position:fixed; bottom:24px; right:24px; z-index:9999; display:flex; flex-direction:column; align-items:flex-end; gap:16px;">
+    <div style="display:{{chatDisplay}}; flex-direction:column; width:340px; max-width:calc(100vw - 48px); background:#10152A; border:1px solid rgba(255,255,255,0.1); border-radius:16px; box-shadow:0 20px 60px rgba(0,0,0,0.55); overflow:hidden;">
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 16px; background:linear-gradient(135deg,#22D3EE,#6366F1 55%,#A855F7);">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <svg class="bot-avatar-icon" width="22" height="22" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <rect x="14" y="16" width="20" height="18" rx="6" fill="none" stroke="#0A0E1A" stroke-width="2.4"/>
+            <line x1="24" y1="16" x2="24" y2="10" stroke="#0A0E1A" stroke-width="2.2"/>
+            <circle cx="24" cy="8" r="2.1" fill="#0A0E1A"/>
+            <circle cx="19" cy="25" r="1.9" fill="#0A0E1A"/><circle cx="29" cy="25" r="1.9" fill="#0A0E1A"/>
+          </svg>
+          <span style="font-weight:700; font-size:14px; color:#0A0E1A;">Edward</span>
+        </div>
+        <button onClick="{{toggleChat}}" style="background:none; border:none; color:#0A0E1A; font-size:20px; line-height:1; cursor:pointer; padding:0;">×</button>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:10px; padding:14px 16px; max-height:280px; overflow-y:auto;">
+        <sc-for list="{{chatMessages}}" as="msg" hint-placeholder-count="1">
+          <div style="align-self:{{msg.align}}; max-width:85%; padding:9px 12px; border-radius:12px; font-size:13.5px; line-height:1.5; background:{{msg.bg}}; color:{{msg.color}};">{{msg.text}}</div>
+        </sc-for>
+      </div>
+      <form onSubmit="{{handleChatSend}}" style="display:flex; gap:8px; padding:12px; border-top:1px solid rgba(255,255,255,0.08);">
+        <input type="text" name="chatDraft" placeholder="Type a question…" value="{{chatDraft}}" onChange="{{handleChatChange}}" style="flex:1; min-width:0; background:#0A0E1A; border:1px solid rgba(255,255,255,0.14); border-radius:8px; padding:9px 11px; color:#F5F7FB; font-size:13.5px; font-family:'Manrope',sans-serif;"/>
+        <button type="submit" style="background:linear-gradient(135deg,#22D3EE,#6366F1 55%,#A855F7); border:none; border-radius:8px; padding:9px 14px; color:#0A0E1A; font-weight:700; font-size:13.5px; cursor:pointer;">Send</button>
+      </form>
+    </div>
+    <div style="display:flex; align-items:center; gap:10px;">
+      <div style="display:{{greetingDisplay}}; align-items:center; gap:8px; background:#10152A; border:1px solid rgba(255,255,255,0.12); border-radius:14px; padding:10px 8px 10px 14px; box-shadow:0 10px 30px rgba(0,0,0,0.4); max-width:200px; font-size:13.5px; line-height:1.4; color:#D8DEEC;">
+        <span>Got questions? Ask me!</span>
+        <button class="chat-greet-close" onClick="{{dismissGreeting}}" aria-label="Dismiss">×</button>
+      </div>
+      <button class="bot-avatar-btn" onClick="{{toggleChat}}" style="position:relative; width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg,#22D3EE,#6366F1 55%,#A855F7); border:none; box-shadow:0 10px 30px rgba(99,102,241,0.45); cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+        <svg class="bot-avatar-icon" width="26" height="26" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <rect x="14" y="16" width="20" height="18" rx="6" fill="none" stroke="#0A0E1A" stroke-width="2.4"/>
+          <line x1="24" y1="16" x2="24" y2="10" stroke="#0A0E1A" stroke-width="2.2"/>
+          <circle cx="24" cy="8" r="2.1" fill="#0A0E1A"/>
+          <circle cx="19" cy="25" r="1.9" fill="#0A0E1A"/><circle cx="29" cy="25" r="1.9" fill="#0A0E1A"/>
+        </svg>
+        <span style="display:{{onlineDotDisplay}}; position:absolute; top:2px; right:2px; width:13px; height:13px; border-radius:50%; background:#22C55E; border:2px solid #0A0E1A; animation:pulseDot 2s infinite;"></span>
+      </button>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      chatOpen: false,
+      greetingDismissed: false,
+      chatDraft: '',
+      chatMessages: [
+        { from: 'bot', text: "Hi! I'm Edward, the Aibuildapp assistant. Ask me about AI redesigns, process automation, custom AI agents, or IoT — or I can help you book a free consultation." }
+      ]
+    };
+  }
+
+  chatReply(text) {
+    const t = text.toLowerCase();
+    if (/\bopc\b/.test(t) && /(agent|vs\.?|versus|differ|difference|compare)/.test(t)) return "Good question — they solve different problems. OPC / OPC UA is a communication standard: it standardizes how data moves between machines, sensors, and software, regardless of vendor. An automation agent is intelligent software that consumes that data — often via OPC UA — and takes action: deciding, orchestrating, and executing tasks. In short: OPC connects your systems, agents decide and act on what those systems report. We build both — the OPC UA integration to get reliable data, and the AI agents that act on it.";
+    if (/\bopc\b/.test(t)) return "OPC — and its modern version, OPC UA (Open Platform Communications Unified Architecture) — is an open communication standard for industrial automation. It defines how machines, sensors, PLCs, and software from different vendors exchange data securely, over a standardized, platform-independent protocol. On its own, OPC UA doesn't make decisions — it's the channel that carries the data reliably. Ask me \"OPC vs agents\" to see how it relates to automation agents.";
+    if (/(automation agent|automated agent)/.test(t)) return "An automation agent is software that acts on data — making decisions, triggering workflows, monitoring conditions, and completing tasks on its own, often using AI. It's different from a protocol like OPC UA: an agent might pull live data through OPC UA, then decide what to do with it. We design and deploy these agents for real operational tasks.";
+    if (/(agent|chatbot|\bbot\b)/.test(t)) return "We design and deploy custom AI agents that handle real tasks — support, data entry, monitoring, follow-ups. This chat is a simple example of one!";
+    if (/(iot|device|sensor|hardware)/.test(t)) return "We help connect your IoT devices and sensors to your software, and support you through deployment, monitoring, and scaling.";
+    if (/(automat|process|workflow)/.test(t)) return "We map the manual steps in your business and automate them — from back-office workflows to customer-facing operations.";
+    if (/(redesign|website|app|rebuild)/.test(t)) return "We rebuild existing websites and apps with AI features built in — smarter search, personalization, chat, recommendations — without starting from zero.";
+    if (/(price|cost|budget|how much)/.test(t)) return "Pricing depends on scope, so the best next step is a free consultation — we'll look at what you have and what you need.";
+    if (/(book|consult|contact|email|talk|call)/.test(t)) return "You can fill out the form just above this chat, or email info@aibuildapp.net directly.";
+    if (/(thank)/.test(t)) return "You're welcome! Anything else I can help with?";
+    if (/\b(hi|hello|hey)\b/.test(t)) return "Hi there! What would you like to know — redesigns, automation, agents, or IoT?";
+    return "I'm Edward, a simple assistant built into this page, so I might not catch everything. For anything specific, the free consultation form above or info@aibuildapp.net will reach the team directly.";
+  }
+
+  renderVals() {
+    const chatMessages = this.state.chatMessages.map((m) => ({
+      text: m.text,
+      align: m.from === 'user' ? 'flex-end' : 'flex-start',
+      bg: m.from === 'user' ? 'linear-gradient(135deg,#22D3EE,#6366F1 55%,#A855F7)' : '#0A0E1A',
+      color: m.from === 'user' ? '#0A0E1A' : '#D8DEEC'
+    }));
+    return {
+      chatDisplay: this.state.chatOpen ? 'flex' : 'none',
+      greetingDisplay: (!this.state.chatOpen && !this.state.greetingDismissed) ? 'flex' : 'none',
+      onlineDotDisplay: this.state.chatOpen ? 'none' : 'block',
+      chatMessages: chatMessages,
+      chatDraft: this.state.chatDraft,
+      toggleChat: () => this.setState({ chatOpen: !this.state.chatOpen, greetingDismissed: true }),
+      dismissGreeting: (e) => { e.stopPropagation(); this.setState({ greetingDismissed: true }); },
+      handleChatChange: (e) => this.setState({ chatDraft: e.target.value }),
+      handleChatSend: (e) => {
+        e.preventDefault();
+        const text = this.state.chatDraft.trim();
+        if (!text) return;
+        const botText = this.chatReply(text);
+        this.setState({
+          chatMessages: [...this.state.chatMessages, { from: 'user', text: text }, { from: 'bot', text: botText }],
+          chatDraft: ''
+        });
+      },
+      handleSubmit: (e) => {
+        e.preventDefault();
+        const f = e.target;
+        const name = (f.fullName.value || '').trim();
+        const email = (f.email.value || '').trim();
+        const company = (f.company.value || '').trim();
+        const need = f.need.value;
+        const details = (f.details.value || '').trim();
+        const subject = 'Free consultation request - ' + name;
+        const lines = [
+          'Name: ' + name,
+          'Email: ' + email,
+          company ? ('Company: ' + company) : null,
+          'Interested in: ' + need,
+          '',
+          details
+        ].filter((x) => x !== null);
+        const body = lines.join('\n');
+        const mailto = 'mailto:info@aibuildapp.net?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        window.location.href = mailto;
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>
